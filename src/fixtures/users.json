@@ -1,0 +1,62 @@
+[
+{
+    "model": "accounts.account",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$390000$AR8L8NdVwSV3Ux26ZXovYB$r83vA1UE0+N+wQKpkuqZk5wYRKAxCD7QOkwXFpNWeHA=",
+        "last_login": "2023-04-01T12:02:20.164Z",
+        "is_superuser": true,
+        "username": "root",
+        "first_name": "",
+        "last_name": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-04-01T06:51:12.041Z",
+        "email": "root@gmail.com",
+        "avatar": "avatars/IMG_20201227_021340_oeYydew.jpg",
+        "about": "",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "accounts.account",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$390000$jomVulHrMI5zqJCPHpgbJZ$qEtor6wU7Pb0DHJnuRMLyw9Jk0NZvPjKIZyGdT6PvUw=",
+        "last_login": "2023-04-01T12:11:13.700Z",
+        "is_superuser": false,
+        "username": "uralbek",
+        "first_name": "",
+        "last_name": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2023-04-01T06:52:48.818Z",
+        "email": "uralbek@gmail.com",
+        "avatar": "avatars/IMG_20201227_021340.jpg",
+        "about": "",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "accounts.account",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$390000$cW70MkiDLA4G0gskNxGEhM$LqVGdgQRi2QatV0YzxUfUCl+gj8H0NslbfDBLUjp2Xg=",
+        "last_login": "2023-04-01T12:10:22.634Z",
+        "is_superuser": false,
+        "username": "meko",
+        "first_name": "",
+        "last_name": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2023-04-01T06:57:11.046Z",
+        "email": "meko@gmail.com",
+        "avatar": "default.png",
+        "about": "",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]
