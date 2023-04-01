@@ -18,10 +18,10 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from forum.views import index
+from forum.views import ThemeListView
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('', ThemeListView.as_view(), name='index'),
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('forum/', include('forum.urls')),

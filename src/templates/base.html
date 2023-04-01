@@ -30,33 +30,45 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav ms-auto gap-2">
+                <ul class="navbar-nav ms-auto gap-2 align-items-center">
                     <li class="nav-item">
                         <a href="{% url 'index' %}" class="nav-link">
                             Главная
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            Создать тему
-                        </a>
-                    </li>
-
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link text-light btn btn-danger btn-sm" href="{% url 'logout' %}">
-                                <u>{{ user.username }}</u>, Выйти
+                            <a href="{% url 'theme_create' %}" class="nav-link">
+                                Создать тему
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a role="button" class="nav-link py-1 text-light btn btn-secondary btn-sm"
+                               href="{% url 'profile' user.pk %}"
+                               data-bs-toggle="tooltip" data-bs-placement="bottom"
+                               data-bs-custom-class="custom-tooltip"
+                               data-bs-title="{{ user.username }}"
+                            >
+
+                                <i class="bi bi-person-circle"></i>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link py-1 text-light btn btn-danger btn-sm" href="{% url 'logout' %}">
+                               <i class="bi bi-box-arrow-right"></i>
                             </a>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link text-light btn btn-success btn-sm" href="{% url 'login' %}">
+                            <a class="nav-link py-1 text-light btn btn-success btn-sm" href="{% url 'login' %}">
                                 Войти
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light btn btn-success btn-sm" href="{% url 'register' %}">
+                            <a class="nav-link py-1 text-light btn btn-success btn-sm" href="{% url 'register' %}">
                                 Зарегистрироваться
                             </a>
                         </li>
@@ -76,5 +88,9 @@
     <!-- Boostrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    </script>
 </body>
 </html>
