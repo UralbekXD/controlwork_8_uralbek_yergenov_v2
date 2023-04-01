@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}
+    Главная
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/reply_card.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-12 col-md-10">
+            <div class="d-flex flex-wrap shadow-lg rounded p-3">
+                <div class="user">
+                    <div class="avatar">
+                        <img src="{{ user_obj.avatar.url }}" alt="user avatar" class="rounded-circle border">
+                    </div>
+                    <div class="username text-center mt-2 fw-bold">
+                        {{ user_obj.username }}
+                        <a href="{% url 'profile_edit' user_obj.pk %}" class="text-warning ms-2">
+                            <i class="bi bi-pencil-fill"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info flex-grow-1 ps-3">
+                    <div class="date">
+                        <u><strong>Member since</strong> {{ user_obj.date_joined }}</u>
+                    </div>
+                    <div class="text">
+                        {% if user_obj.about %}
+                            {{ user_obj.about }}
+                        {% else %}
+                            No Bio
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-12 col-md-10">
+            <h2 class="mb-4">Replies</h2>
+
+            <div class="replies d-flex flex-column gap-5">
+                {% for reply in replies %}
+                    {% include 'forum/includes/reply_card.html' %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row mt-5 mb-5">
+            <div class="d-flex justify-content-center">
+                {% if page_obj.has_other_pages %}
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination pagination">
+                            {#    Prev    #}
+                            {% if page_obj.has_previous %}
+                                 <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                        <span aria-hidden="true">
+                                            &laquo;
+                                        </span>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {#    Center    #}
+                            {% for page in paginator.page_range %}
+
+                                {% if page_obj.number == page %}
+                                    <li class="page-item">
+                                        <a class="page-link active" href="?page={{ page }}">
+                                            {{ page }}
+                                        </a>
+                                    </li>
+                                {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page }}">
+                                            {{ page }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                            {% endfor %}
+
+                            {#    Next    #}
+                            {% if page_obj.has_next %}
+                                 <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Previous">
+                                        <span aria-hidden="true">
+                                            &raquo;
+                                        </span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

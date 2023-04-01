@@ -1,6 +1,8 @@
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 from django.contrib.auth import login, logout, get_user_model, authenticate
 from django.views.generic import View, CreateView, TemplateView, DetailView, UpdateView
+from django.core.paginator import Paginator
+from django.contrib.auth.mixins import UserPassesTestMixin, PermissionRequiredMixin, LoginRequiredMixin
 
 from .forms import LoginForm, SignUpForm, ProfileEditForm
 
@@ -52,17 +54,34 @@ class SignUpView(CreateView):
         return reverse('index')
 
 
-# class ProfileDetailView(DetailView):
-#     model = get_user_model()
-#     template_name = 'accounts/user_detail.html'
-#     context_object_name = 'user_obj'
-#
-#
-# class ProfileEditView(UpdateView):
-#     model = get_user_model()
-#     form_class = ProfileEditForm
-#     template_name = 'accounts/user_detail_edit.html'
-#     context_object_name = 'user_obj'
-#
-#     def get_success_url(self):
-#         return reverse('profile', kwargs={'pk': self.object.pk})
+class ProfileDetailView(DetailView):
+    model = get_user_model()
+    template_name = 'accounts/user_detail.html'
+    context_object_name = 'user_obj'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        replies = self.object.replies.all().order_by('-created_at')
+
+        paginator = Paginator(replies, 3)
+        page = self.request.GET.get('page')
+
+        context['replies'] = paginator.get_page(page)
+        context['paginator'] = paginator
+        context['page_obj'] = paginator.get_page(page)
+        return context
+
+
+class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = get_user_model()
+    form_class = ProfileEditForm
+    template_name = 'accounts/user_detail_edit.html'
+    context_object_name = 'user_obj'
+
+    def test_func(self):
+        curr_user = self.request.user
+        prof_user = self.model.objects.get(pk=self.kwargs.get('pk'))
+        return prof_user.username == curr_user.username
+
+    def get_success_url(self):
+        return reverse('profile', kwargs={'pk': self.object.pk})
