@@ -1,10 +1,133 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}
+    Тема
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/reply_card.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-12 col-md-10">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col" class="table-primary border">Title</th>
+                        <th scope="col" class="table-info border">Date</th>
+                        <th scope="col" class="table-success border">Author</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name">
+                            {{ theme.name }}
+                        </td>
+                        <td class="date">
+                            {{ theme.created_at }}
+                        </td>
+                        <td class="author">
+                            {{ theme.author.username }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Description</h4>
+            <div class="description mb-5">
+                {{ theme.text }}
+            </div>
+
+            {% if user == theme.author %}
+                <a href="{% url 'theme_update' theme.pk %}" class="text-warning d-inline-block">
+                    <i class="fs-3 bi bi-pencil-square"></i>
+                </a>
+
+                <form action="{% url 'theme_delete' theme.pk %}" method="POST" class="d-inline-block">
+                    {% csrf_token %}
+                    <button type="submit" class="border-0 bg-transparent text-danger">
+                        <i class="fs-3 bi bi-trash-fill"></i>
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-12 col-md-10">
+            <h2 class="mb-4">Replies</h2>
+
+            <div class="create mb-5">
+                {% if user.is_authenticated %}
+                    <form action="{% url 'reply_create' theme.pk %}" method="POST">
+                        {% csrf_token %}
+                        {{ replies_form|crispy }}
+                        <button type="submit" class="btn btn-primary w-100">
+                            Ответить
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+
+            <div class="replies d-flex flex-column gap-5">
+                {% for reply in replies %}
+                    {% include 'forum/includes/reply_card.html' %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row mt-5 mb-5">
+            <div class="d-flex justify-content-center">
+                {% if page_obj.has_other_pages %}
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination pagination">
+                            {#    Prev    #}
+                            {% if page_obj.has_previous %}
+                                 <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                        <span aria-hidden="true">
+                                            &laquo;
+                                        </span>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {#    Center    #}
+                            {% for page in paginator.page_range %}
+
+                                {% if page_obj.number == page %}
+                                    <li class="page-item">
+                                        <a class="page-link active" href="?page={{ page }}">
+                                            {{ page }}
+                                        </a>
+                                    </li>
+                                {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page }}">
+                                            {{ page }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                            {% endfor %}
+
+                            {#    Next    #}
+                            {% if page_obj.has_next %}
+                                 <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Previous">
+                                        <span aria-hidden="true">
+                                            &raquo;
+                                        </span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

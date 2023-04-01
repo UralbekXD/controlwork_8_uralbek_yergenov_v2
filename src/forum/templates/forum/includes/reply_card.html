@@ -1,0 +1,21 @@
+<div class="reply d-flex flex-wrap pb-4 border-bottom ">
+    <div class="user shadow p-2 rounded border">
+        <div class="avatar">
+            <img src="{{ reply.user.avatar.url }}" alt="user avatar" class="rounded-circle border">
+        </div>
+        <div class="username text-center">
+            <a href="#">
+                {{ reply.user.username }}
+            </a>
+        </div>
+    </div>
+
+    <div class="info flex-grow-1 ps-3">
+        <div class="date">
+            <u>{{ reply.created_at }}</u>
+        </div>
+        <div class="text">
+            {{ reply.text }}
+        </div>
+    </div>
+</div>

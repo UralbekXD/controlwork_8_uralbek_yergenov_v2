@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<tr>
+    <td class="name">
+        <a href="{% url 'theme_detail' theme.pk %}">
+            {{ theme.name }}
+        </a>
+    </td>
+    <td class="date">
+        {{ theme.created_at }}
+    </td>
+    <td class="author">
+        <a href="{% url 'profile' theme.author.pk %}">
+            {{ theme.author.username }}
+        </a>
+    </td>
+    <td class="count">
+        {{ theme.replies.count }}
+    </td>
+</tr>
